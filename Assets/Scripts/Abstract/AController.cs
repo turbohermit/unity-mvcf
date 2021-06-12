@@ -17,16 +17,22 @@ namespace MVCF.Controllers
             Type controllerType = this.GetType();
             foreach (AView view in p_views)
             {
-                System.Type viewType = view.GetType();
-                Type t = typeof(IViewListener<>).MakeGenericType(viewType);
-                if (t.IsAssignableFrom(controllerType))
-                {
-                    // IViewListener listener = (IViewListener)this;
-                    // listener.Subscribe(view);
-                }
+                AddView(view);
+
+                // Possible generic interface solution?
+                // System.Type viewType = view.GetType();
+                // Type t = typeof(IViewListener<>).MakeGenericType(viewType);
+                // if (t.IsAssignableFrom(controllerType))
+                // {
+                // }
             }
 
             Initialize();
+        }
+
+        protected virtual void AddView(AView p_view)
+        {
+
         }
     }
 }

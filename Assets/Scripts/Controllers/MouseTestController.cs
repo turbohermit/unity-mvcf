@@ -13,13 +13,26 @@ namespace MVCF.Controllers
             base.Initialize();
         }
 
+        protected override void AddView(AView p_view)
+        {
+            switch (p_view)
+            {
+                case LeftMouseView view:
+                    Subscribe(view);
+                    break;
+                case RightMouseView view:
+                    Subscribe(view);
+                    break;
+            }
+        }
+
         public void Subscribe(LeftMouseView p_view) => p_view.OnInputReceived += ClickLeft;
 
         public void Subscribe(RightMouseView p_view) => p_view.OnInputReceived += ClickRight;
 
-        public void Unsubscribe(LeftMouseView p_view) { }
+        public void Unsubscribe(LeftMouseView p_view) => p_view.OnInputReceived -= ClickLeft;
 
-        public void Unsubscribe(RightMouseView p_view) { }
+        public void Unsubscribe(RightMouseView p_view) => p_view.OnInputReceived -= ClickRight;
 
         private void ClickLeft()
         {
