@@ -4,14 +4,7 @@ namespace MVCF.Controllers
 {
     public class MouseTestController : AController, IViewListener<LeftMouseView>, IViewListener<RightMouseView>
     {
-        public MouseTestController(params AView[] p_views) : base(p_views)
-        {
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
+        public MouseTestController(params AView[] p_views) : base(p_views) { }
 
         protected override void AddView(AView p_view)
         {

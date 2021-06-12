@@ -18,12 +18,11 @@ namespace MVCF.Controllers
             foreach (AView view in p_views)
             {
                 AddView(view);
-
-                // Possible generic interface solution?
                 // System.Type viewType = view.GetType();
                 // Type t = typeof(IViewListener<>).MakeGenericType(viewType);
                 // if (t.IsAssignableFrom(controllerType))
                 // {
+                //     How to call Subscribe on IViewListener only using the view type variable?
                 // }
             }
 
