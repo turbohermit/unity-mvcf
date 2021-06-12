@@ -1,4 +1,6 @@
 using System;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace MVCF.Controllers
 {
@@ -6,32 +8,64 @@ namespace MVCF.Controllers
     {
         private static int m_initializationIndex;
 
-        public virtual void Initialize()
-        {
-            JDebug.Log("{0} {1} initialized.", m_initializationIndex, this.GetType().ToString());
-            m_initializationIndex++;
-        }
+        private List<AView> m_subscribedViews;
+
+        protected bool m_isInitialized;
 
         protected AController(params AView[] p_views)
         {
-            Type controllerType = this.GetType();
             foreach (AView view in p_views)
-            {
                 AddView(view);
-                // System.Type viewType = view.GetType();
-                // Type t = typeof(IViewListener<>).MakeGenericType(viewType);
-                // if (t.IsAssignableFrom(controllerType))
-                // {
-                //     How to call Subscribe on IViewListener only using the view type variable?
-                // }
-            }
 
             Initialize();
         }
 
+        public virtual void Initialize()
+        {
+            JDebug.Log("{0} {1} initialized.", m_initializationIndex, this.GetType().ToString());
+            m_initializationIndex++;
+            m_isInitialized = true;
+        }
+
+        public virtual void Destroy()
+        {
+            for (int i = m_subscribedViews.Count - 1; i >= 0; i--)
+            {
+                RemoveView(m_subscribedViews[i]);
+            }
+
+
+        }
+
         protected virtual void AddView(AView p_view)
         {
+            Type controllerType = this.GetType();
+            Type viewType = p_view.GetType();
+            Type interfaceType = typeof(IViewListener<>).MakeGenericType(viewType);
+            if (interfaceType.IsAssignableFrom(controllerType))
+            {
+                MethodInfo subscribe = interfaceType.GetMethod("Subscribe"); ;
+                subscribe.Invoke(this, new object[] { p_view });
+            }
 
+            if (m_subscribedViews == null)
+                m_subscribedViews = new List<AView>();
+
+            m_subscribedViews.Add(p_view);
+        }
+
+        protected virtual void RemoveView(AView p_view)
+        {
+            Type controllerType = this.GetType();
+            Type viewType = p_view.GetType();
+            Type interfaceType = typeof(IViewListener<>).MakeGenericType(viewType);
+            if (interfaceType.IsAssignableFrom(controllerType))
+            {
+                MethodInfo subscribe = interfaceType.GetMethod("Unsubscribe"); ;
+                subscribe.Invoke(this, new object[] { p_view });
+            }
+
+            m_subscribedViews.Remove(p_view);
         }
     }
 }
