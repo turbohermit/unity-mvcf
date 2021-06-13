@@ -1,10 +1,11 @@
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using MVCF.Models;
 
 namespace MVCF.Controllers
 {
-    public abstract class AController
+    public abstract class AController : IControllerParameter
     {
         private static int m_initializationIndex;
 
@@ -12,10 +13,21 @@ namespace MVCF.Controllers
 
         protected bool m_isInitialized;
 
-        protected AController(params AView[] p_views)
+        protected AController(params IControllerParameter[] p_parameters)
         {
-            foreach (AView view in p_views)
-                AddView(view);
+            foreach (IControllerParameter param in p_parameters)
+            {
+                switch (param)
+                {
+                    case AView view:
+                        AddView(view);
+                        break;
+                        // case AModel model:
+                        //     break;
+                        // case AController controller:
+                        //     break;
+                }
+            }
 
             Initialize();
         }
@@ -29,12 +41,12 @@ namespace MVCF.Controllers
 
         public virtual void Destroy()
         {
+            m_isInitialized = false;
+
             for (int i = m_subscribedViews.Count - 1; i >= 0; i--)
             {
                 RemoveView(m_subscribedViews[i]);
             }
-
-
         }
 
         protected virtual void AddView(AView p_view)
