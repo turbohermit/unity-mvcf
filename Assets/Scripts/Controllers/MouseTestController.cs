@@ -31,18 +31,18 @@ namespace MVCF.Controllers
 
         private void ClickLeft()
         {
-            JDebug.Log("Receive Left");
+            UnityEngine.Debug.LogFormat("Receive Left");
             m_testValue.AddValue();
         }
 
         private void ClickRight()
         {
-            JDebug.Log("Receive Right");
+            UnityEngine.Debug.LogFormat("Receive Right");
         }
 
         private void OnModelUpdated(TestValueModel p_model)
         {
-            JDebug.Log("Test value: {0}", p_model.value);
+            UnityEngine.Debug.LogFormat("Test value: {0}", p_model.value);
         }
     }
 }

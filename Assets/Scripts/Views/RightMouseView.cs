@@ -11,7 +11,6 @@ namespace MVCF.Views
         {
             if (Input.GetMouseButtonDown(1))
             {
-                JDebug.Log("Send right");
                 OnInputReceived?.Invoke();
             }
         }

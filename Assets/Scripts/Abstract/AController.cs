@@ -39,7 +39,7 @@ namespace MVCF.Controllers
         #region PUBLIC
         public virtual void Initialize()
         {
-            JDebug.Log("{0} {1} initialized.", m_initializationIndex, this.GetType().ToString());
+            UnityEngine.Debug.LogFormat("{0} {1} initialized.", m_initializationIndex, this.GetType().ToString());
             m_initializationIndex++;
             m_isInitialized = true;
         }

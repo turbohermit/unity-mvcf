@@ -15,7 +15,7 @@ public class CoreFeature : MonoBehaviour
 
     private void CreateControllers()
     {
-        new MouseTestController(LeftMouseView, RightMouseView, new TestValueModel());
+        new MouseTestController(LeftMouseView, RightMouseView, new TestValueModel(10));
         new EmptyTestController();
     }
 }
