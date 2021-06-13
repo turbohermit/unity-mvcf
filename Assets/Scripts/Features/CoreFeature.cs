@@ -1,6 +1,7 @@
 using UnityEngine;
 using MVCF.Controllers;
 using MVCF.Views;
+using MVCF.Models;
 
 public class CoreFeature : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class CoreFeature : MonoBehaviour
 
     private void CreateControllers()
     {
-        new MouseTestController(LeftMouseView, RightMouseView);
+        new MouseTestController(LeftMouseView, RightMouseView, new TestValueModel());
         new EmptyTestController();
     }
 }
