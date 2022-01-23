@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using MVCF.Models;
+using MVCF.Views;
 
 namespace MVCF.Controllers
 {
@@ -11,7 +12,7 @@ namespace MVCF.Controllers
 
         private List<AView> m_subscribedViews;
         private List<AModel> m_subscribedModels;
-
+        private List<AController> m_subscribedControllers;
         protected bool m_isInitialized;
 
         #region CONSTRUCTOR
@@ -28,6 +29,7 @@ namespace MVCF.Controllers
                         AddModel(model);
                         break;
                     case AController controller:
+                        AddController(controller);
                         break;
                 }
             }
@@ -93,6 +95,26 @@ namespace MVCF.Controllers
         {
             Subscribe(p_model, typeof(IModelListener<>), "Unsubscribe");
             m_subscribedModels.Remove(p_model);
+
+            if (m_subscribedModels.Count == 0)
+                m_subscribedModels = null;
+        }
+
+        //Automatic calls to call Subscribe implementation for each IControllerListener type on derived class.
+        protected void AddController(AController p_controller)
+        {
+            Subscribe(p_controller, typeof(IControllerListener<>), "Subscribe");
+
+            if (m_subscribedControllers == null)
+                m_subscribedControllers = new List<AController>();
+
+            m_subscribedControllers.Add(p_controller);
+        }
+
+        protected void RemoveController(AController p_controller)
+        {
+            Subscribe(p_controller, typeof(IControllerListener<>), "Unsubscribe");
+            m_subscribedControllers.Remove(p_controller);
 
             if (m_subscribedModels.Count == 0)
                 m_subscribedModels = null;

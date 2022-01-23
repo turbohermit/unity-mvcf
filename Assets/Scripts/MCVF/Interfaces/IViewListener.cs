@@ -1,3 +1,5 @@
+using MVCF.Views;
+
 namespace MVCF.Controllers
 {
     public interface IViewListener<T> where T : AView
